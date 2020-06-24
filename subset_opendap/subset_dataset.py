@@ -216,14 +216,13 @@ def standalone_main():
 
   if len(date1) != 8:
     sys.exit('\nEnd date should be in format yyyymmdd !\nProgram will exit now !\n')
-
-  if options.onetime and !(date1==date0):
-    sys.exit('--onetime flag is not compatible with a finish date!\nProgram will exit now !\n')
-    
-  if options.onetime:
-    itemsPerPage=1
     
   year0=date0[0:4]; month0=date0[4:6]; day0=date0[6:8];
+  
+  # if we only want the start time field, then the finish date must be one day later
+  if options.onetime:
+    date1 = (date(int(year0), int(month0), int(day0)) + timedelta(days=1)).strftime("%Y%m%d")
+  
   year1=date1[0:4]; month1=date1[4:6]; day1=date1[6:8];
 
   timeStr = '&startTime='+year0+'-'+month0+'-'+day0+'&endTime='+year1+'-'+month1+'-'+day1
