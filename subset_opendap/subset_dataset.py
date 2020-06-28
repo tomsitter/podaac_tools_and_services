@@ -177,7 +177,7 @@ def parseoptions():
                         type="int", dest="gridpoints", default=1)
   parser.add_option("-n", "--onlySST", help="only SST field [default: %default]", action="store_true", dest="onlySST",default=False)
   parser.add_option("-t", "--alltime", help="all time data [default: %default]", action="store_true", dest="alltime",default=False)
-  parser.add_option("--onetime", help="Only time for the start date. Do not include a finish date with this option [default: %default]", action="store_true", dest="onetime", default=Fale) 
+  parser.add_option("--onetime", help="Only time for the start date. Do not include a finish date with this option [default: %default]", action="store_true", dest="onetime", default=False) 
 
   # Parse command line arguments
   (options, args) = parser.parse_args()
