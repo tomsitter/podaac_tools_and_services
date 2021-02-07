@@ -10,6 +10,7 @@
 #   2014.12.23  Y. Jiang, version 3 (Modified to be more general including L3 and L4 datasets)
 #   2017.06.20  Y. Jiang, fix to work with MODIS datasets 
 #   2017.09.26  Y. Jiang, fix python 2.6 and 3.0 version issues 
+#   2020.06.24  T. Sitter, add flag to download only single date
 
 ##################################
 # user parameters to be editted: #
@@ -176,6 +177,7 @@ def parseoptions():
                         type="int", dest="gridpoints", default=1)
   parser.add_option("-n", "--onlySST", help="only SST field [default: %default]", action="store_true", dest="onlySST",default=False)
   parser.add_option("-t", "--alltime", help="all time data [default: %default]", action="store_true", dest="alltime",default=False)
+  parser.add_option("--onetime", help="Only time for the start date. Do not include a finish date with this option [default: %default]", action="store_true", dest="onetime", default=False) 
 
   # Parse command line arguments
   (options, args) = parser.parse_args()
@@ -208,13 +210,19 @@ def standalone_main():
   else:
     date1 = options.date1
 
+    
   if len(date0) != 8:
     sys.exit('\nStart date should be in format yyyymmdd !\nProgram will exit now !\n')
 
   if len(date1) != 8:
     sys.exit('\nEnd date should be in format yyyymmdd !\nProgram will exit now !\n')
-
+    
   year0=date0[0:4]; month0=date0[4:6]; day0=date0[6:8];
+  
+  # if we only want the start time field, then the finish date must be one day later
+  if options.onetime:
+    date1 = (date(int(year0), int(month0), int(day0)) + timedelta(days=1)).strftime("%Y%m%d")
+  
   year1=date1[0:4]; month1=date1[4:6]; day1=date1[6:8];
 
   timeStr = '&startTime='+year0+'-'+month0+'-'+day0+'&endTime='+year1+'-'+month1+'-'+day1
